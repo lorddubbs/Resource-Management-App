@@ -35,7 +35,7 @@ This app runs on localhost port 9090, please change if there are conflicts with 
 
 
 
-# SRM-APP
+
 
 ## Backend setup
 ```
