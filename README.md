@@ -58,6 +58,11 @@ php artisan config:clear
 docker exec -it srm-app php artisan migrate --seed
 ```
 
+## Run Unit Tests
+```
+php artisan test
+```
+
 ## Generate API DOCS
 ```
 php artisan l5-swagger:generate
