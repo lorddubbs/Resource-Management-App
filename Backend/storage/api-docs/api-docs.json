@@ -1,0 +1,449 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Simple Resources Management  API Documentation",
+        "description": "Service Documentation",
+        "contact": {
+            "email": "info@srm.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/app/v1",
+            "description": "SRM API Server"
+        }
+    ],
+    "paths": {
+        "/asset": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: All | Get all Asset",
+                "description": "This endpoint retrieves all assets",
+                "operationId": "assetIndex",
+                "responses": {
+                    "200": {
+                        "description": "Assets retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: Administrator | Create a new Asset",
+                "description": "This endpoint creates a new Asset, an Asset can be a PDF file, HTML Snippet or Link.",
+                "operationId": "createAsset",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAsset"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Asset created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized. User not with access role"
+                    },
+                    "422": {
+                        "description": "The given data was invalid."
+                    }
+                }
+            }
+        },
+        "/asset/{assetId}": {
+            "put": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: Administrator | Update an Asset | Please use x-www-form-urlencoded for body",
+                "description": "This endpoint updates the asset",
+                "operationId": "updateAsset",
+                "parameters": [
+                    {
+                        "name": "assetId",
+                        "in": "path",
+                        "description": "Asset ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAsset"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Asset updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized. User not with access role"
+                    },
+                    "404": {
+                        "description": "Asset not found"
+                    },
+                    "422": {
+                        "description": "The given data was invalid."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: Administrator | Delete an Asset",
+                "description": "This endpoint deletes the selected Asset",
+                "operationId": "deleteAsset",
+                "parameters": [
+                    {
+                        "name": "assetId",
+                        "in": "path",
+                        "description": "Asset ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Asset deleted successfully"
+                    },
+                    "403": {
+                        "description": "Unauthorized. User not with access role"
+                    },
+                    "404": {
+                        "description": "Asset not found"
+                    },
+                    "422": {
+                        "description": "The given data was invalid."
+                    }
+                }
+            }
+        },
+        "/asset/{slug}": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: Any | Get details of an Asset",
+                "description": "This endpoint returns all related data of specified asset",
+                "operationId": "getAsset",
+                "responses": {
+                    "200": {
+                        "description": "Asset retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated. Token needed"
+                    },
+                    "403": {
+                        "description": "Unauthorized. User not with access role"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/asset/find/{assetId}": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: Administrator | Get details of an Asset by ID",
+                "description": "This endpoint returns all related data of specified asset",
+                "operationId": "findAsset",
+                "responses": {
+                    "200": {
+                        "description": "Asset retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated. Token needed"
+                    },
+                    "403": {
+                        "description": "Unauthorized. User not with access role"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/asset/count": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Authority: Administrator | Get all Asset Counts",
+                "description": "This endpoint returns a count of resources created by type",
+                "operationId": "assetCounts",
+                "responses": {
+                    "200": {
+                        "description": "Asset Counts returned",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Asset"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Asset": {
+                "title": "Asset",
+                "description": "Asset model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "title",
+                        "description": "The title of the Asset",
+                        "type": "string",
+                        "example": "How I Met Your Mother"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "The description of the Asset",
+                        "type": "string",
+                        "example": "Robin later joined the Avengers"
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "The content media of the Asset",
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/dtgglytjm/image/upload/v1612307531/Files/i9gts5zn0wiusxekrrjz.pdf"
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "The type of media for the Asset",
+                        "type": "string",
+                        "example": "file"
+                    },
+                    "option": {
+                        "title": "option",
+                        "description": "The option specified for content",
+                        "type": "string",
+                        "example": "0"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-09-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-09-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Asset"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "The name of the User",
+                        "type": "string",
+                        "example": "Peter"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "The email of the User",
+                        "type": "string",
+                        "example": "peter_oduntan@yahoo.com"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-09-27 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-09-27 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            },
+            "CreateAsset": {
+                "title": "Create Asset Request",
+                "description": "Body Data | An Asset can be a PDF file, HTML Snippet or Link",
+                "required": [
+                    "title",
+                    "description",
+                    "content",
+                    "type",
+                    "option"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "The title of the Asset",
+                        "type": "string",
+                        "example": "How I Met Your Mother"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "The description of the asset created",
+                        "type": "string",
+                        "example": "Comic relief"
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "The content media of the Asset",
+                        "type": "string",
+                        "example": "https://en.wikipedia.org/wiki/How_I_Met_Your_Mother"
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "The type of media for the Asset",
+                        "type": "string",
+                        "example": "link"
+                    },
+                    "option": {
+                        "title": "option",
+                        "description": "The option specified for content",
+                        "type": "string",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAsset": {
+                "title": "Create Asset Request",
+                "description": "Body Data",
+                "required": [
+                    "title",
+                    "description",
+                    "content",
+                    "type",
+                    "option"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "The title of the Asset",
+                        "type": "string",
+                        "example": "How I Met Your Mother"
+                    },
+                    "description": {
+                        "title": "description",
+                        "description": "The description of the asset created",
+                        "type": "string",
+                        "example": "Comic relief"
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "The content media of the Asset",
+                        "type": "string",
+                        "example": "https://www.imdb.com/title/tt0460649/"
+                    },
+                    "type": {
+                        "title": "type",
+                        "description": "The type of media for the Asset",
+                        "type": "string",
+                        "example": "link"
+                    },
+                    "option": {
+                        "title": "option",
+                        "description": "The option specified for content",
+                        "type": "string",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
