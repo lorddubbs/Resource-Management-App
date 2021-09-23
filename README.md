@@ -1,6 +1,6 @@
-# srm-app
+# SRM-APP
 
-## Project setup
+## Frontend setup
 ```
 npm install
 ```
@@ -25,5 +25,45 @@ npm run test:unit
 npm run lint
 ```
 
+### API URL
+```
+http://localhost/app/v1
+```
+
 ### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+This app runs on localhost port 9090, please change if there are conflicts with other services on your computer.
+
+
+
+# SRM-APP
+
+## Backend setup
+```
+composer install
+```
+
+## Run Docker
+Set up .env with corresponding Docker credentials. App should run on localhost.
+```
+docker compose up
+```
+
+## Clear Cache
+```
+php artisan config:clear
+```
+
+## Run Migrations and Seeders from Docker Container
+```
+docker exec -it srm-app php artisan migrate --seed
+```
+
+## Generate API DOCS
+```
+php artisan l5-swagger:generate
+```
+
+### API DOCS
+```
+http://localhost/app/docs
+```
