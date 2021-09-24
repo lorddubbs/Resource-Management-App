@@ -5,7 +5,7 @@
       </div>
 
       <div class="form-group margin-t-40 default-flex-entry">
-          <input type="text" placeholder="Title" v-model="asset.title" />
+          <input type="text" placeholder="Title" v-model="title" />
       </div>
       <div class="form-group margin-t-10 default-flex-entry">
           <div class="upload-box" v-if="assetType === 'pdf'">
@@ -20,11 +20,11 @@
 
           <div class="container" v-else-if="assetType === 'link'">
               <div class="width-fix">
-              <input type="text" placeholder="Enter a valid url" v-model="asset.content" />
+              <input type="text" placeholder="Enter a valid url" v-model="content" />
               </div>
 
               <div class="width-fix margin-t-10 checkbox">
-                  <input type="checkbox" id="option" true-value="1" false-value="0" v-model="asset.option">
+                  <input type="checkbox" id="option" true-value="1" false-value="0" v-model="option">
                   <label for="option">Open in a new tab</label>
               </div>
           </div>
@@ -47,7 +47,7 @@
 
 <script>
 
-//import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 const SmartText = () => import(/* webpackChunkName: "forms" */ /* webpackPrefetch: true */ "@/common/components/forms/Wysiwyg.vue");
 
@@ -64,31 +64,32 @@ export default {
   },
   data() {
     return {
-        asset: {
-            title: '',
-            description: '',
-            content: '',
-            type: this.assetType,
-            option: '0'
-        },
+        title: '',
+        description: '',
+        content: '',
+        type: this.assetType,
+        option: '0',
         pdf: null,
         loading: false
     };
   },
   methods: {
+      ...mapActions({
+          createAsset: "asset/createAsset"
+        }),
       processContent(snippet) {
-          this.asset.description = snippet.description;
-          this.asset.content = snippet.content;
+          this.description = snippet.description;
+          this.content = snippet.content;
       },
       getFile(e) {
-        let pdf = e.target.files[0] || e.dataTransfer.files;
-        this.asset.content = pdf;
+        this.content = e.target.files[0] || e.dataTransfer.files;
+        return this.content;
       },
       async initiate() {
           try {
               this.loader(true);
               let payload = this.getPayload();
-              await this.$store.dispatch('asset/createAsset', payload);
+              await this.createAsset(payload);
               this.loader(false);
               this.asset = {};
               this.$router.push({
@@ -102,11 +103,11 @@ export default {
       getPayload() {
           let payload = new FormData();
           //payload.append('asset', JSON.stringify(this.asset));
-          payload.append('content', this.asset.content);
-          payload.append('title', this.asset.title);
-          payload.append('description', this.asset.description);
-          payload.append('type', this.asset.type);
-          payload.append('option', this.asset.option);
+          payload.append('content', this.content);
+          payload.append('title', this.title);
+          payload.append('description', this.description);
+          payload.append('type', this.type);
+          payload.append('option', this.option);
           return payload;
       },
       loader(args) {
