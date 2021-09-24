@@ -554,13 +554,13 @@
     width:100%;
 
     .showcase {
-        @include flexbox(space-between);
+        @include flexbox(left);
         flex-flow: wrap;
         width:100%;
     }
     
     .showcase-item {
-        @include flexbox(center);
+        @include flexbox(left);
         width:30%;
         margin-bottom:20px;
 
