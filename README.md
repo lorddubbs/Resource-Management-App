@@ -48,6 +48,12 @@ Set up .env with corresponding Docker credentials. App should run on localhost.
 docker compose up
 ```
 
+## Publish Cloudinary Package
+Files are uploaded using the Cloudinary service, publish the package after running a "composer install".
+```
+php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider" --tag="cloudinary-laravel-config"
+```
+
 ## Clear Cache
 ```
 php artisan config:clear
