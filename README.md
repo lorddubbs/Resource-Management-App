@@ -66,7 +66,7 @@ docker exec -it srm-app php artisan migrate --seed
 
 ## Run Unit Tests
 ```
-php artisan test
+docker exec -it srm-app php artisan test
 ```
 
 ## Generate API DOCS
